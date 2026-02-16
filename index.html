@@ -41,12 +41,22 @@
         .pikachu {
             width: 150px;
             height: 150px;
-            animation: bounce 1s infinite;
+            animation: pikachuSpin 2s ease-in-out infinite;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        @keyframes pikachuSpin {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            25% { 
+                transform: translateY(-30px) rotate(-15deg) scale(1.1);
+            }
+            50% { 
+                transform: translateY(-40px) rotate(0deg) scale(1.15);
+            }
+            75% { 
+                transform: translateY(-30px) rotate(15deg) scale(1.1);
+            }
         }
 
         .loading-text {
@@ -70,6 +80,23 @@
             align-items: center;
             z-index: 9999;
             transition: opacity 0.5s ease;
+            overflow: hidden;
+        }
+
+        /* Animated background particles for countdown */
+        #countdown-container::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: particleMove 20s linear infinite;
+        }
+
+        @keyframes particleMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         #countdown-container.hidden {
@@ -80,47 +107,103 @@
         .countdown-title {
             font-size: 48px;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
             text-align: center;
             padding: 0 20px;
-            animation: glow 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255,255,255,0.8),
+                         0 0 60px rgba(255,105,180,0.6);
+            animation: titlePulse 2s ease-in-out infinite;
+            font-weight: bold;
+            position: relative;
+            z-index: 10;
         }
 
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
-            50% { text-shadow: 0 0 40px rgba(255,255,255,0.8); }
+        @keyframes titlePulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(255,255,255,0.8),
+                             0 0 60px rgba(255,105,180,0.6);
+            }
+            50% { 
+                transform: scale(1.05);
+                text-shadow: 0 0 40px rgba(255,255,255,1),
+                             0 0 80px rgba(255,105,180,0.9),
+                             0 0 100px rgba(138,43,226,0.7);
+            }
         }
 
         .countdown-timer {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
             justify-content: center;
             padding: 0 20px;
+            position: relative;
+            z-index: 10;
         }
 
         .time-unit {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            min-width: 100px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            min-width: 120px;
             text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                        0 0 60px rgba(255, 105, 180, 0.4),
+                        inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: unitFloat 3s ease-in-out infinite;
+        }
+
+        .time-unit:nth-child(1) { animation-delay: 0s; }
+        .time-unit:nth-child(2) { animation-delay: 0.5s; }
+
+        @keyframes unitFloat {
+            0%, 100% { 
+                transform: translateY(0px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                            0 0 60px rgba(255, 105, 180, 0.4),
+                            inset 0 0 30px rgba(255, 255, 255, 0.1);
+            }
+            50% { 
+                transform: translateY(-15px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                            0 0 80px rgba(255, 105, 180, 0.7),
+                            inset 0 0 40px rgba(255, 255, 255, 0.2);
+            }
         }
 
         .time-value {
-            font-size: 48px;
+            font-size: 64px;
             font-weight: bold;
             color: white;
             display: block;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
+                         0 0 40px rgba(138, 43, 226, 0.6);
+            animation: numberGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes numberGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
+                             0 0 40px rgba(138, 43, 226, 0.6);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(255, 105, 180, 1),
+                             0 0 60px rgba(138, 43, 226, 0.9),
+                             0 0 80px rgba(255, 20, 147, 0.7);
+            }
         }
 
         .time-label {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
             text-transform: uppercase;
-            margin-top: 5px;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            font-weight: 600;
         }
 
         /* Birthday Message */
@@ -268,12 +351,27 @@
             margin-right: auto;
             padding: 0 20px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-            animation: fadeIn 1s ease;
+            overflow: hidden;
+            border-right: 3px solid rgba(255, 105, 180, 0.8);
+            white-space: nowrap;
+            animation: typing 3s steps(100, end), blink 0.75s step-end infinite;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes typing {
+            from { width: 0; max-width: 0; }
+            to { width: 100%; max-width: 800px; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(255, 105, 180, 0.8); }
+        }
+
+        /* Remove blinking cursor after animation */
+        .slide-description.typed {
+            border-right: none;
+            white-space: normal;
+            animation: fadeIn 1s ease;
         }
 
         .photo-grid {
@@ -412,40 +510,9 @@
             background: rgba(0, 0, 0, 0.8);
         }
 
-        /* Music Control */
+        /* Music Control - HIDDEN */
         .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 105, 180, 0.6);
-            padding: 15px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            color: white;
-            font-size: 18px;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            display: none;
-            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
-            animation: musicPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes musicPulse {
-            0%, 100% { 
-                box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
-            }
-            50% { 
-                box-shadow: 0 0 50px rgba(255, 105, 180, 0.8);
-            }
-        }
-
-        .music-control:hover {
-            background: rgba(255, 105, 180, 0.2);
-            transform: scale(1.1);
-            border-color: rgba(255, 105, 180, 1);
-            box-shadow: 0 0 50px rgba(255, 105, 180, 0.9);
+            display: none !important;
         }
 
         /* Confetti Canvas */
@@ -729,11 +796,6 @@
         </div>
     </div>
 
-    <!-- Music Control -->
-    <div class="music-control" id="musicControl" onclick="toggleMusic()">
-        🎵 Music
-    </div>
-
     <!-- Audio Element -->
     <audio id="birthdayMusic" loop>
         <source src="Elliot_James_Reay_-_I_Think_They_Call_This_Love__Official_Music_Video_.mp3" type="audio/mpeg">
@@ -777,21 +839,35 @@
             document.getElementById('countdown-container').classList.add('hidden');
             document.getElementById('birthday-message').style.display = 'flex';
             
-            // Show confetti
+            // Show floating hearts
             showConfetti();
             
             // After 3 seconds, show slideshow
             setTimeout(() => {
                 document.getElementById('birthday-message').style.display = 'none';
                 document.getElementById('slideshow-container').style.display = 'block';
-                document.getElementById('musicControl').style.display = 'block';
                 
                 // Start music automatically from 3 seconds
                 playMusic();
+                
+                // Trigger typewriter effect
+                triggerTypewriter();
             }, 3000);
         }
 
-        // Confetti Animation
+        // Typewriter effect trigger
+        function triggerTypewriter() {
+            setTimeout(() => {
+                const descriptions = document.querySelectorAll('.slide-description');
+                descriptions.forEach((desc) => {
+                    desc.addEventListener('animationend', function() {
+                        this.classList.add('typed');
+                    });
+                });
+            }, 500);
+        }
+
+        // Show Floating Hearts
         function showConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             canvas.style.display = 'block';
@@ -799,62 +875,111 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            const confetti = [];
-            const confettiCount = 150;
-            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6ab04c', '#c44569'];
+            const hearts = [];
+            const heartCount = 100;
+            const heartColors = ['#ff69b4', '#ff1493', '#ff6b9d', '#ff85a1', '#ffc0cb', '#ff4d94'];
 
-            for (let i = 0; i < confettiCount; i++) {
-                confetti.push({
+            // Create heart shape path
+            function drawHeart(ctx, x, y, size, color) {
+                ctx.save();
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                
+                const topCurveHeight = size * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+                
+                // Top left curve
+                ctx.bezierCurveTo(
+                    x, y, 
+                    x - size / 2, y, 
+                    x - size / 2, y + topCurveHeight
+                );
+                
+                // Bottom left curve
+                ctx.bezierCurveTo(
+                    x - size / 2, y + (size + topCurveHeight) / 2, 
+                    x, y + (size + topCurveHeight) / 2, 
+                    x, y + size
+                );
+                
+                // Bottom right curve
+                ctx.bezierCurveTo(
+                    x, y + (size + topCurveHeight) / 2, 
+                    x + size / 2, y + (size + topCurveHeight) / 2, 
+                    x + size / 2, y + topCurveHeight
+                );
+                
+                // Top right curve
+                ctx.bezierCurveTo(
+                    x + size / 2, y, 
+                    x, y, 
+                    x, y + topCurveHeight
+                );
+                
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            for (let i = 0; i < heartCount; i++) {
+                hearts.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 6 + 4,
-                    d: Math.random() * confettiCount,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    tilt: Math.floor(Math.random() * 10) - 10,
-                    tiltAngleIncremental: Math.random() * 0.07 + 0.05,
-                    tiltAngle: 0
+                    size: Math.random() * 20 + 15,
+                    speed: Math.random() * 2 + 1,
+                    color: heartColors[Math.floor(Math.random() * heartColors.length)],
+                    swing: Math.random() * 2 - 1,
+                    swingSpeed: Math.random() * 0.03 + 0.01,
+                    opacity: Math.random() * 0.5 + 0.5,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.1
                 });
             }
 
-            function drawConfetti() {
+            function animateHearts() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                confetti.forEach((c, index) => {
-                    ctx.beginPath();
-                    ctx.lineWidth = c.r / 2;
-                    ctx.strokeStyle = c.color;
-                    ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
-                    ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
-                    ctx.stroke();
+                hearts.forEach((heart, index) => {
+                    ctx.globalAlpha = heart.opacity;
+                    
+                    // Update position
+                    heart.y += heart.speed;
+                    heart.x += Math.sin(heart.y * heart.swingSpeed) * heart.swing;
+                    heart.rotation += heart.rotationSpeed;
 
-                    c.tiltAngle += c.tiltAngleIncremental;
-                    c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
-                    c.x += Math.sin(c.d);
-                    c.tilt = Math.sin(c.tiltAngle) * 15;
+                    ctx.save();
+                    ctx.translate(heart.x, heart.y);
+                    ctx.rotate(heart.rotation);
+                    drawHeart(ctx, 0, 0, heart.size, heart.color);
+                    ctx.restore();
 
-                    if (c.y > canvas.height) {
-                        confetti[index] = {
+                    // Reset heart when it goes off screen
+                    if (heart.y > canvas.height + 50) {
+                        hearts[index] = {
                             x: Math.random() * canvas.width,
-                            y: -20,
-                            r: c.r,
-                            d: c.d,
-                            color: c.color,
-                            tilt: c.tilt,
-                            tiltAngleIncremental: c.tiltAngleIncremental,
-                            tiltAngle: c.tiltAngle
+                            y: -50,
+                            size: Math.random() * 20 + 15,
+                            speed: Math.random() * 2 + 1,
+                            color: heartColors[Math.floor(Math.random() * heartColors.length)],
+                            swing: Math.random() * 2 - 1,
+                            swingSpeed: Math.random() * 0.03 + 0.01,
+                            opacity: Math.random() * 0.5 + 0.5,
+                            rotation: Math.random() * Math.PI * 2,
+                            rotationSpeed: (Math.random() - 0.5) * 0.1
                         };
                     }
                 });
 
-                requestAnimationFrame(drawConfetti);
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animateHearts);
             }
 
-            drawConfetti();
+            animateHearts();
 
-            // Hide confetti after 10 seconds
+            // Hide hearts after 15 seconds
             setTimeout(() => {
                 canvas.style.display = 'none';
-            }, 10000);
+            }, 15000);
         }
 
         // Slide Navigation
@@ -881,19 +1006,6 @@
             music.currentTime = 3;
             music.play();
             musicPlaying = true;
-            document.getElementById('musicControl').textContent = '🔊 Pause';
-        }
-
-        function toggleMusic() {
-            const music = document.getElementById('birthdayMusic');
-            if (musicPlaying) {
-                music.pause();
-                document.getElementById('musicControl').textContent = '🔇 Play';
-            } else {
-                music.play();
-                document.getElementById('musicControl').textContent = '🔊 Pause';
-            }
-            musicPlaying = !musicPlaying;
         }
 
         // Initialize
