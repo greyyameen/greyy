@@ -226,6 +226,54 @@
             to { opacity: 1; }
         }
 
+        /* Puzzle Game Styles */
+        .memory-card {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .card-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            border: 3px solid rgba(255, 105, 180, 0.8);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow: hidden;
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .birthday-text {
             font-size: 72px;
             color: white;
@@ -510,9 +558,40 @@
             background: rgba(0, 0, 0, 0.8);
         }
 
-        /* Music Control - HIDDEN */
+        /* Music Control - LEFT SIDE */
         .music-control {
-            display: none !important;
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 105, 180, 0.6);
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: none;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(255, 105, 180, 0.8);
+            }
+        }
+
+        .music-control:hover {
+            background: rgba(255, 105, 180, 0.2);
+            transform: scale(1.1);
+            border-color: rgba(255, 105, 180, 1);
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.9);
         }
 
         /* Confetti Canvas */
@@ -556,6 +635,107 @@
                 box-shadow: 0 0 80px rgba(255, 105, 180, 0.9),
                             0 0 120px rgba(138, 43, 226, 0.6),
                             inset 0 0 60px rgba(255, 105, 180, 0.2);
+            }
+        }
+
+        /* Memory Card Game */
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 105, 180, 0.5);
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .memory-card:hover {
+            box-shadow: 0 8px 30px rgba(255, 105, 180, 0.6);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            opacity: 0.6;
+            pointer-events: none;
+            border-color: #00ff00;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 48px;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow: hidden;
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .game-win-message {
+            margin-top: 30px;
+            font-size: 32px;
+            color: #00ff00;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            animation: winPulse 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes winPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                padding: 10px;
             }
         }
 
@@ -780,8 +960,27 @@
             </div>
         </div>
 
-        <!-- Final Message Slide -->
+        <!-- Slide 8: Puzzle Game -->
         <div class="slide" id="slide8">
+            <h2 class="slide-title">🎮 Memory Game - Find the Pairs! 🎮</h2>
+            <p class="slide-description" style="border: none; animation: fadeIn 1s ease;">Match all the pairs of Fiza's photos! Click on cards to flip them.</p>
+            
+            <div id="gameStats" style="text-align: center; color: white; font-size: 20px; margin-bottom: 20px;">
+                <span>Moves: <strong id="moves">0</strong></span> | 
+                <span>Pairs Found: <strong id="pairs">0/6</strong></span>
+            </div>
+
+            <div id="puzzleGame" style="display: grid; grid-template-columns: repeat(4, 120px); gap: 15px; justify-content: center; margin: 40px auto; max-width: 600px;">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+
+            <div id="winMessage" style="display: none; text-align: center; color: white; font-size: 28px; margin-top: 30px; animation: fadeIn 1s ease;">
+                🎉 Congratulations! You found all pairs! 🎉
+            </div>
+        </div>
+
+        <!-- Final Message Slide -->
+        <div class="slide" id="slide9">
             <div class="final-message">
                 <h2 style="font-size: 36px; margin-bottom: 30px;">💕 A Special Message 💕</h2>
                 <p>"You and I are perfect for each other, never think anything else."</p>
@@ -796,6 +995,11 @@
         </div>
     </div>
 
+    <!-- Music Control - LEFT SIDE -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        🎵 Music
+    </div>
+
     <!-- Audio Element -->
     <audio id="birthdayMusic" loop>
         <source src="Elliot_James_Reay_-_I_Think_They_Call_This_Love__Official_Music_Video_.mp3" type="audio/mpeg">
@@ -803,8 +1007,8 @@
 
     <script>
         let currentSlide = 1;
-        const totalSlides = 8;
-        let countdownTime = 5 * 60; // 5 minutes in seconds
+        const totalSlides = 9; // Including game slide
+        let countdownTime = 2 * 60; // 2 minutes in seconds
         let countdownInterval;
         let musicPlaying = false;
 
@@ -846,12 +1050,16 @@
             setTimeout(() => {
                 document.getElementById('birthday-message').style.display = 'none';
                 document.getElementById('slideshow-container').style.display = 'block';
+                document.getElementById('musicControl').style.display = 'block';
                 
                 // Start music automatically from 3 seconds
                 playMusic();
                 
                 // Trigger typewriter effect
                 triggerTypewriter();
+                
+                // Initialize puzzle game
+                initPuzzleGame();
             }, 3000);
         }
 
@@ -865,6 +1073,117 @@
                     });
                 });
             }, 500);
+        }
+
+        // Puzzle Game Logic
+        let puzzleCards = [];
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let moves = 0;
+        let pairsFound = 0;
+
+        const cardImages = [
+            'WhatsApp_Image_2026-02-15_at_4_28_52_PM.jpeg',
+            'WhatsApp_Image_2026-02-15_at_4_28_53_PM.jpeg',
+            'WhatsApp_Image_2026-02-15_at_4_28_55_PM.jpeg',
+            'WhatsApp_Image_2026-02-15_at_4_28_54_PM.jpeg',
+            'WhatsApp_Image_2026-02-15_at_4_28_56_PM.jpeg',
+            'WhatsApp_Image_2026-02-15_at_4_28_57_PM__1_.jpeg'
+        ];
+
+        function initPuzzleGame() {
+            const gameBoard = document.getElementById('puzzleGame');
+            gameBoard.innerHTML = '';
+            
+            // Create pairs
+            const cardPairs = [...cardImages, ...cardImages];
+            shuffleArray(cardPairs);
+
+            cardPairs.forEach((image, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.image = image;
+                card.innerHTML = `
+                    <div class="card-face card-front">❓</div>
+                    <div class="card-face card-back">
+                        <img src="${image}" alt="Memory card">
+                    </div>
+                `;
+                card.addEventListener('click', flipCard);
+                gameBoard.appendChild(card);
+            });
+
+            // Reset counters
+            moves = 0;
+            pairsFound = 0;
+            document.getElementById('moves').textContent = moves;
+            document.getElementById('pairs').textContent = `${pairsFound}/6`;
+            document.getElementById('winMessage').style.display = 'none';
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+            if (this.classList.contains('matched')) return;
+
+            this.classList.add('flip');
+
+            if (!hasFlippedCard) {
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+
+            secondCard = this;
+            moves++;
+            document.getElementById('moves').textContent = moves;
+
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            let isMatch = firstCard.dataset.image === secondCard.dataset.image;
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
+            
+            pairsFound++;
+            document.getElementById('pairs').textContent = `${pairsFound}/6`;
+
+            if (pairsFound === 6) {
+                setTimeout(() => {
+                    document.getElementById('winMessage').style.display = 'block';
+                }, 500);
+            }
+
+            resetBoard();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
+
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
         }
 
         // Show Floating Hearts
@@ -1006,6 +1325,19 @@
             music.currentTime = 3;
             music.play();
             musicPlaying = true;
+            document.getElementById('musicControl').textContent = '🔊 Pause';
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('birthdayMusic');
+            if (musicPlaying) {
+                music.pause();
+                document.getElementById('musicControl').textContent = '🔇 Play';
+            } else {
+                music.play();
+                document.getElementById('musicControl').textContent = '🔊 Pause';
+            }
+            musicPlaying = !musicPlaying;
         }
 
         // Initialize
