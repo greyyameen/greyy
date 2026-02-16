@@ -1321,23 +1321,49 @@
         // Music Control
         function playMusic() {
             const music = document.getElementById('birthdayMusic');
+            const musicBtn = document.getElementById('musicControl');
+            
             // Start music from 3 seconds to skip intro
             music.currentTime = 3;
-            music.play();
-            musicPlaying = true;
-            document.getElementById('musicControl').textContent = '🔊 Pause';
+            
+            // Try to play
+            const playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Auto-play successful
+                    musicPlaying = true;
+                    musicBtn.textContent = '🔊 Pause';
+                    musicBtn.style.display = 'block';
+                }).catch((error) => {
+                    // Auto-play blocked - show button to user
+                    console.log('Auto-play blocked. User interaction required.');
+                    musicPlaying = false;
+                    musicBtn.textContent = '🎵 Click to Start Music';
+                    musicBtn.style.display = 'block';
+                    musicBtn.style.background = 'rgba(255, 105, 180, 0.3)';
+                    musicBtn.style.border = '3px solid rgba(255, 105, 180, 1)';
+                    musicBtn.style.animation = 'musicPulse 1s ease-in-out infinite';
+                });
+            }
         }
 
         function toggleMusic() {
             const music = document.getElementById('birthdayMusic');
+            const musicBtn = document.getElementById('musicControl');
+            
             if (musicPlaying) {
                 music.pause();
-                document.getElementById('musicControl').textContent = '🔇 Play';
+                musicBtn.textContent = '🔇 Play';
+                musicPlaying = false;
             } else {
+                music.currentTime = 3;
                 music.play();
-                document.getElementById('musicControl').textContent = '🔊 Pause';
+                musicBtn.textContent = '🔊 Pause';
+                musicBtn.style.background = 'rgba(0, 0, 0, 0.9)';
+                musicBtn.style.border = '2px solid rgba(255, 105, 180, 0.6)';
+                musicPlaying = true;
             }
-            musicPlaying = !musicPlaying;
         }
 
         // Initialize
